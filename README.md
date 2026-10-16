@@ -1,5 +1,7 @@
 # PDF to Markdown Service
 
+Developing a PDF to markdown converter using GLM-OCR. The end goal is to install this service in a small server where multiple clients can send their PDF file and get the markdown version of it.
+
 ## Run the code
 
 To run the code (in the current state)
@@ -8,19 +10,17 @@ To run the code (in the current state)
 uvicorn app.main:app --reload
 ```
 
+## Test the API endpoints
+
+[localhost/docs](http://127.0.0.1:8000/docs)
+
 ## Used dependencies
 
-``` sh
-pip install fastapi uvicorn python-multipart aiofiles
-```
-
-I am using vLLM in order to use a GLM-OCR local installation
-
-``` sh
-uv pip install vllm --torch-backend auto
-```
+Check [requirements](requirements.txt)
 
 ## Docker
+
+In the current state I'm using ollama instead of vLLM for testing. My school laptop doesn't have a nvidia graphics card. I'm using ollama both because it can work without GPU but also because it's easier to setup on WSL and it uses the same OpenAI-compatible REST API.
 
 1. Start the container
 
@@ -41,7 +41,6 @@ docker exec -it ollama-ocr ollama pull qwen3:0.6b
 ```sh
 docker compose logs -f ollama-ocr
 ```
-
 
 ## Issues
 
