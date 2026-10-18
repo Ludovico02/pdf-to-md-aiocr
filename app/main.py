@@ -1,7 +1,6 @@
 import pathlib
 
 from fastapi import FastAPI, UploadFile
-
 from pdf_service import PdfService
 
 app = FastAPI()
