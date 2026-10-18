@@ -2,6 +2,12 @@
 
 Developing a PDF to markdown converter using GLM-OCR. The end goal is to install this service in a small server where multiple clients can send their PDF file and get the markdown version of it.
 
+## TODO
+
+- [ ] Implement error handling and try catch statements
+- [ ] Type annotations
+- [ ] CLI Version
+
 ## Run the code
 
 To run the code (in the current state)
