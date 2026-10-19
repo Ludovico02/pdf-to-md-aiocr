@@ -3,9 +3,9 @@ import pathlib
 import uuid
 
 import aiofiles
-from fastapi import HTTPException, UploadFile  # noqa: F401
+from fastapi import UploadFile
+from fastapi.responses import FileResponse
 from glmocr import GlmOcr
-from ollama import ChatResponse, Client  # noqa: F401
 
 
 class PdfService:
@@ -27,8 +27,7 @@ class PdfService:
 
     async def pdf_uploader(self, file: UploadFile):
         if file.content_type != "application/pdf":
-            # raise HTTPException(status_code = 422, detail = "Wrong filetype.")
-            raise TypeError("The file is not a .pdf file")
+            raise ValueError("The file is not a .pdf file")
 
         file_id = str(uuid.uuid4())
         async with aiofiles.open(self.pdf_dir / f"{file_id}.pdf", "wb") as f:
@@ -49,7 +48,21 @@ class PdfService:
         uploadfile = await self.pdf_uploader(file)
         file_id = uploadfile["id"]
 
-        result = await asyncio.to_thread(self.parser.parse, f"{self.pdf_dir}/{file_id}.pdf")  
-        await asyncio.to_thread(result.save, output_dir = self.markdown_dir, save_layout_visualization=False)
+        try:
+            result = await asyncio.to_thread(
+                self.parser.parse, f"{self.pdf_dir}/{file_id}.pdf"
+            )
+        except Exception as e:
+            raise RuntimeError(f"Failure while converting the file: {e}") from e
+
+        await asyncio.to_thread(
+            result.save, output_dir=self.markdown_dir, save_layout_visualization=False
+        )
+
         
-        return "Task completed"
+        return {
+            "id": file_id,
+            "filename": uploadfile["filename"],
+            "md_path": self.markdown_dir / file_id / f"{file_id}.md",
+            "markdown": result.markdown_result,
+        }
