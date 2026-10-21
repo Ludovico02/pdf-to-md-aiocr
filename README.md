@@ -2,9 +2,11 @@
 
 Developing a PDF to markdown converter using GLM-OCR. The end goal is to install this service in a small server where multiple clients can send their PDF file and get the markdown version of it.
 
+py --version
+Python 3.13.15
+
 ## TODO
 
-- [ ] Implement error handling and try catch statements
 - [ ] Type annotations
 - [ ] CLI Version
 
