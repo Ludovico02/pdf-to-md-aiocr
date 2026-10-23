@@ -9,22 +9,52 @@ Python 3.13.15
 
 - [ ] Type annotations
 - [ ] CLI Version
+- [ ] Testing
 
-## Run the code
+## Dev
 
-To run the code (in the current state)
+I'm using `python 3.13.15`
 
-``` sh
-uvicorn app.main:app --reload
+You need to have `python 3.13`  and `docker` installed in your system.
+
+1. Setup the python environment
+
+``` bash
+python -m venv .venv
 ```
 
-## Test the API endpoints
+2. Install all dependencies, check [requirements](requirements.txt)
 
-[localhost/docs](http://127.0.0.1:8000/docs)
+``` bash
+pip install -r requirements.txt
+```
 
-## Used dependencies
+3. Run the docker compose
 
-Check [requirements](requirements.txt)
+If you are on a device without a dedicated Nvidia GPU run:
+
+``` bash
+docker compose up -d
+```
+
+If you have one run
+
+``` bash
+docker compose -f docker-compose.yml -f docker-compose.gpu.yml up -d
+```
+
+4. Run the code
+
+``` bash
+# /app
+uvicorn main:app --reload
+```
+
+5. Test it on [localhost/docs](http://127.0.0.1:8000/docs)
+
+### Update Requirements
+
+
 
 ## Docker
 
@@ -51,8 +81,6 @@ docker compose logs -f ollama-ocr
 ```
 
 ## Issues
-
-- GLM-OCR does not support italian, for now I will still build it using it
 
 ## License
 [Apache License Version 2.0, January 2004](./LICENSE)
