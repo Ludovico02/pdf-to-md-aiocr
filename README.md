@@ -10,6 +10,7 @@ Python 3.13.15
 - [ ] Type annotations
 - [ ] CLI Version
 - [ ] Testing
+- [ ] Dockerfile
 
 ## Dev
 
@@ -52,35 +53,11 @@ uvicorn main:app --reload
 
 5. Test it on [localhost/docs](http://127.0.0.1:8000/docs)
 
-### Update Requirements
+6. Check the logs if needed:
 
-
-
-## Docker
-
-In the current state I'm using ollama instead of vLLM for testing. My school laptop doesn't have a nvidia graphics card. I'm using ollama both because it can work without GPU but also because it's easier to setup on WSL and it uses the same OpenAI-compatible REST API.
-
-1. Start the container
-
-```sh
-docker compose up -d
-```
-
-2. Pull the LLM model for testing
-
-I first tested the code with qwen3 0.6b parameters because it's a very small model
-
-```sh
-docker exec -it ollama-ocr ollama pull qwen3:0.6b
-```
-
-3. Check the logs
-
-```sh
+``` bash
 docker compose logs -f ollama-ocr
 ```
-
-## Issues
 
 ## License
 [Apache License Version 2.0, January 2004](./LICENSE)
