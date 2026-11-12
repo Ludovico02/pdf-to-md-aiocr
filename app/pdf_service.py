@@ -4,7 +4,6 @@ import uuid
 
 import aiofiles
 from fastapi import UploadFile
-from fastapi.responses import FileResponse
 from glmocr import GlmOcr
 
 
@@ -55,11 +54,14 @@ class PdfService:
         except Exception as e:
             raise RuntimeError(f"Failure while converting the file: {e}") from e
 
-        await asyncio.to_thread(
-            result.save, output_dir=self.markdown_dir, save_layout_visualization=False
-        )
+        sem = asyncio.Semaphore(1)
+        async with sem:
+            await asyncio.to_thread(
+                result.save,
+                output_dir=self.markdown_dir,
+                save_layout_visualization=False,
+            )
 
-        
         return {
             "id": file_id,
             "filename": uploadfile["filename"],
